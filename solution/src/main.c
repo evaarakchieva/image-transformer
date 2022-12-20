@@ -1,6 +1,6 @@
-#include "util.h"
 #include "image_processor.h"
 #include "rotation.h"
+#include "util.h"
 #include <stdint.h>
 #include <stdio.h>
 

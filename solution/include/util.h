@@ -1,8 +1,8 @@
 #ifndef IMAGE_TRANSFORMER_UTIL_H
 #define IMAGE_TRANSFORMER_UTIL_H
+#include  <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include  <stdint.h>
 
 uint32_t padding_calculator(uint32_t width);
 

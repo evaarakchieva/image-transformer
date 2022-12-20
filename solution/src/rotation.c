@@ -22,3 +22,6 @@ struct image rotate(struct image const source) {
     return rotated_image;
 }
 
+
+
+
