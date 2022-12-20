@@ -39,7 +39,9 @@ int main(int argc, char** argv) {
     printf("THE PROCESS OF ROTATING HAS BEGUN...\n");
 
     struct image rotated_image = rotate(original_image);
+
     free(original_image.data);
+
     printf("THE IMAGE WAS SUCCESSFULLY ROTATED\n");
 
     FILE * out = fopen(output_file, "wb");
@@ -50,6 +52,7 @@ int main(int argc, char** argv) {
     }
 
     printf("THE PROCESS OF WRITING HAS BEGUN...\n");
+
     enum write_status new_write_status = to_bmp(out, &rotated_image);
     if(new_write_status != WRITE_OK) {
         printf("there is a problem: the file cannot be written");

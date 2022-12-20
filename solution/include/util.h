@@ -1,5 +1,6 @@
 #ifndef IMAGE_TRANSFORMER_UTIL_H
 #define IMAGE_TRANSFORMER_UTIL_H
+
 #include  <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

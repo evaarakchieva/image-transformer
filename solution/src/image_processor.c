@@ -24,7 +24,7 @@ struct bmp_header bmp_header_generator (const struct image* img) {
             .biPlanes = 1,
             .biBitCount = 24,
             .biCompression = 0,
-            .biSizeImage = sizeof(struct pixel) * width * height + padding * height,
+            .biSizeImage = 3 * width * height + padding * height,
             .bfileSize = (sizeof(struct bmp_header) + height * width * sizeof(struct pixel)
                           + height * padding)
             ,
@@ -77,7 +77,6 @@ enum write_status to_bmp( FILE* out, struct image const* img ){
 
     struct pixel *new_pixel = img->data;
     for (size_t i = 0; i < img->height; i++) {
-        fwrite(&header, sizeof(struct bmp_header), 1, out);
         if (fwrite(new_pixel, sizeof(struct pixel), img->width, out) != img->width)
             return WRITE_ERROR;
         if (fwrite(new_pixel, 1, padding, out) != padding)
@@ -86,3 +85,5 @@ enum write_status to_bmp( FILE* out, struct image const* img ){
     }
     return WRITE_OK;
 }
+
+
