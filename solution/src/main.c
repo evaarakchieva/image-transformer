@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     char *input_file = argv[1];
     char *output_file = argv[2];
 
-    FILE * in = fopen(input_file, "r");
+    FILE * in = fopen(input_file, "rb");
     if(in == NULL) {
         printf("there is a problem: the file cannot be opened");
         return 1;
@@ -28,10 +28,10 @@ int main(int argc, char** argv) {
 
     struct image original_image;
 
-    enum read_status new_read_status = from_bmp(in, &original_image);
+    enum read_status new_read_status = from_bmp (in, &original_image);
     if (new_read_status != READ_OK) {
         printf("there is a problem: the file cannot be read");
-        return 1;
+        printf("%d\n", new_read_status);
     }
 
     printf("THE IMAGE WAS SUCCESSFULLY READ\n");
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     free(original_image.data);
     printf("THE IMAGE WAS SUCCESSFULLY ROTATED\n");
 
-    FILE * out = fopen(output_file, "w");
+    FILE * out = fopen(output_file, "wb");
 
     if(out == NULL) {
         printf("there is a problem: the file cannot be written");

@@ -4,7 +4,9 @@
 static enum read_status header_reader (FILE *in, struct bmp_header *header) {
     if (fread(header, sizeof(struct bmp_header), 1, in) == 1)
         return READ_OK;
-    else return READ_INVALID_HEADER;
+    else {
+        return READ_INVALID_HEADER;
+    }
 }
 
 struct bmp_header bmp_header_generator (const struct image* img) {
@@ -61,7 +63,7 @@ enum read_status from_bmp( FILE* in, struct image* img ) {
             return READ_INVALID_SIGNATURE;
         }
     }
-
+    free(header);
     return READ_OK;
 }
 
@@ -82,6 +84,5 @@ enum write_status to_bmp( FILE* out, struct image const* img ){
             return WRITE_ERROR;
         new_pixel = new_pixel + (size_t) img->width;
     }
-    free(img->data);
     return WRITE_OK;
 }

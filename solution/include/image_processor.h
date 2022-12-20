@@ -11,8 +11,7 @@ struct image {
     struct pixel* data;
 };
 
-
-struct bmp_header {
+struct __attribute__((packed)) bmp_header {
     uint16_t bfType;
     uint32_t  bfileSize;
     uint32_t bfReserved;
@@ -29,6 +28,7 @@ struct bmp_header {
     uint32_t biClrUsed;
     uint32_t  biClrImportant;
 };
+
 
 enum read_status  {
     READ_OK = 0,
