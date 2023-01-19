@@ -1,5 +1,8 @@
 #include "image_processor.h"
-#include "util.h"
+
+uint32_t padding_calculator (uint32_t width) {
+    return (4 - (width * sizeof(struct pixel)) % 4) % 4;
+}
 
 static enum read_status header_reader (FILE *in, struct bmp_header *header) {
     if (fread(header, sizeof(struct bmp_header), 1, in) == 1)
@@ -36,7 +39,6 @@ struct bmp_header bmp_header_generator (const struct image* img) {
 }
 
 enum read_status from_bmp( FILE* in, struct image* img ) {
-    printf("PROCESS OF FILE READING HAS BEGUN\n");
     struct bmp_header *header = malloc(sizeof(struct bmp_header));
     enum read_status header_checkup = header_reader(in, header);
     if (header_checkup != READ_OK) {
