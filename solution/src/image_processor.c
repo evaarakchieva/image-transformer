@@ -1,5 +1,23 @@
 #include "image_processor.h"
 
+struct __attribute__((packed)) bmp_header {
+    uint16_t bfType;
+    uint32_t  bfileSize;
+    uint32_t bfReserved;
+    uint32_t bOffBits;
+    uint32_t biSize;
+    uint32_t biWidth;
+    uint32_t  biHeight;
+    uint16_t  biPlanes;
+    uint16_t biBitCount;
+    uint32_t biCompression;
+    uint32_t biSizeImage;
+    uint32_t biXPelsPerMeter;
+    uint32_t biYPelsPerMeter;
+    uint32_t biClrUsed;
+    uint32_t  biClrImportant;
+};
+
 uint32_t padding_calculator (uint32_t width) {
     return (4 - (width * sizeof(struct pixel)) % 4) % 4;
 }
@@ -37,6 +55,15 @@ struct bmp_header bmp_header_generator (const struct image* img) {
             .biClrImportant = 0 };
     return header;
 }
+
+struct image generate_image(size_t width, size_t height) {
+    struct image image = {0};
+    image.width = width;
+    image.height = height;
+    image.data = malloc(width * height * sizeof(struct pixel));
+    return image;
+}
+
 
 enum read_status from_bmp( FILE* in, struct image* img ) {
     struct bmp_header *header = malloc(sizeof(struct bmp_header));

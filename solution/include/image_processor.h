@@ -12,25 +12,6 @@ struct image {
     struct pixel* data;
 };
 
-struct __attribute__((packed)) bmp_header {
-    uint16_t bfType;
-    uint32_t  bfileSize;
-    uint32_t bfReserved;
-    uint32_t bOffBits;
-    uint32_t biSize;
-    uint32_t biWidth;
-    uint32_t  biHeight;
-    uint16_t  biPlanes;
-    uint16_t biBitCount;
-    uint32_t biCompression;
-    uint32_t biSizeImage;
-    uint32_t biXPelsPerMeter;
-    uint32_t biYPelsPerMeter;
-    uint32_t biClrUsed;
-    uint32_t  biClrImportant;
-};
-
-
 enum read_status  {
     READ_OK = 0,
     READ_INVALID_SIGNATURE,
@@ -48,6 +29,8 @@ enum  write_status  {
 enum write_status to_bmp( FILE* out, struct image const* img );
 
 struct bmp_header bmp_header_generator(const struct image* img);
+
+struct image generate_image(size_t width, size_t height);
 
 uint32_t padding_calculator(uint32_t width);
 #endif //IMAGE_TRANSFORMER_IMAGE_PROCESSOR_H
