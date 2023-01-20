@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 
     fprintf(stdout, "THE PROCESS OF ROTATING HAS BEGUN...\n");
 
-    struct image rotated_image = rotate(original_image);
+    struct image rotated_image = rotate(&original_image);
 
     free(original_image.data);
 
