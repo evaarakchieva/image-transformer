@@ -28,9 +28,4 @@ enum  write_status  {
 
 enum write_status to_bmp( FILE* out, struct image const* img );
 
-struct bmp_header bmp_header_generator(const struct image* img);
-
-struct image generate_image(size_t width, size_t height);
-
-uint32_t padding_calculator(uint32_t width);
 #endif //IMAGE_TRANSFORMER_IMAGE_PROCESSOR_H

@@ -56,15 +56,6 @@ struct bmp_header bmp_header_generator (const struct image* img) {
     return header;
 }
 
-struct image generate_image(size_t width, size_t height) {
-    struct image image = {0};
-    image.width = width;
-    image.height = height;
-    image.data = malloc(width * height * sizeof(struct pixel));
-    return image;
-}
-
-
 enum read_status from_bmp( FILE* in, struct image* img ) {
     struct bmp_header *header = malloc(sizeof(struct bmp_header));
     enum read_status header_checkup = header_reader(in, header);
