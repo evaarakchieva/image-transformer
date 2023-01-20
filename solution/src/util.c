@@ -8,3 +8,4 @@ enum arg_status args_counter( const int args ){
         return NUMBER_OF_ARGS_IS_OK;
     }
 }
+

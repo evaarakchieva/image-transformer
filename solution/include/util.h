@@ -12,4 +12,7 @@ enum  arg_status  {
 
 enum  arg_status args_counter( const int args );
 
+enum problem_with_file_status  {
+    THERE_IS_NO_FILE
+};
 #endif //IMAGE_TRANSFORMER_UTIL_H

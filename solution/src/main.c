@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     enum arg_status new_arg_status = args_counter(argc);
     if (new_arg_status != NUMBER_OF_ARGS_IS_OK) {
         fprintf(stderr, "there is a problem: the number of args is invalid");
-        return 1;
+        return PROBLEM_WITH_ARGS;
     }
 
     char *input_file = argv[1];
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     FILE * in = fopen(input_file, "rb");
     if(in == NULL) {
         fprintf(stderr,"there is a problem: the file cannot be opened");
-        return 1;
+        return THERE_IS_NO_FILE;
     }
 
     struct image original_image;
@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 
     if(out == NULL) {
         fprintf(stderr, "there is a problem: the file cannot be written");
-        return 1;
+        return THERE_IS_NO_FILE;
     }
 
     fprintf(stdout, "THE PROCESS OF WRITING HAS BEGUN...\n");
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     enum write_status new_write_status = to_bmp(out, &rotated_image);
     if(new_write_status != WRITE_OK) {
         fprintf(stderr, "there is a problem: the file cannot be written");
-        return 1;
+        return new_write_status;
     }
 
     free(rotated_image.data);
