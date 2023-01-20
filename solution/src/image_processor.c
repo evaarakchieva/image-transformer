@@ -91,8 +91,7 @@ enum write_status to_bmp( FILE* out, struct image const* img ){
     if (fwrite(&header, sizeof(struct bmp_header), 1, out) != 1)
         return WRITE_ERROR;
 
-    uint32_t padding;
-    padding = padding_calculator(img->width);
+    const uint32_t padding = padding_calculator(img->width);
 
     struct pixel *new_pixel = img->data;
     for (size_t i = 0; i < img->height; i++) {
