@@ -1,4 +1,5 @@
 #include "image_processor.h"
+#include "rotation.h"
 
 struct __attribute__((packed)) bmp_header {
     uint16_t bfType;
@@ -22,12 +23,22 @@ uint32_t padding_calculator (uint32_t width) {
     return (4 - (width * sizeof(struct pixel)) % 4) % 4;
 }
 
-static enum read_status header_reader (FILE *in, struct bmp_header *header) {
-    if (fread(header, sizeof(struct bmp_header), 1, in) == 1)
-        return READ_OK;
-    else {
+void image_deinitialize(struct image *img) {
+    free(img->data);
+}
+
+enum read_status header_reader(FILE *const in, struct bmp_header *header) {
+    if (fread(header, sizeof(struct bmp_header), 1, in) != 1) {
         return READ_INVALID_HEADER;
     }
+    if (header->bfType != 0x4D42) {
+        return READ_INVALID_SIGNATURE;
+    }
+    if (header->biBitCount != 24) {
+        return READ_INVALID_BITS;
+    }
+    fseek(in, header->bOffBits, SEEK_SET);
+    return READ_OK;
 }
 
 struct bmp_header bmp_header_generator (const struct image* img) {
@@ -47,8 +58,7 @@ struct bmp_header bmp_header_generator (const struct image* img) {
             .biCompression = 0,
             .biSizeImage = 3 * width * height + padding * height,
             .bfileSize = (sizeof(struct bmp_header) + height * width * sizeof(struct pixel)
-                          + height * padding)
-            ,
+                          + height * padding),
             .biXPelsPerMeter = 0,
             .biYPelsPerMeter = 0,
             .biClrUsed =0,
@@ -57,37 +67,34 @@ struct bmp_header bmp_header_generator (const struct image* img) {
 }
 
 enum read_status from_bmp( FILE* in, struct image* img ) {
-    struct bmp_header *header = malloc(sizeof(struct bmp_header));
-    enum read_status header_checkup = header_reader(in, header);
+    struct bmp_header header = {0};
+    enum read_status header_checkup = header_reader(in, &header);
     if (header_checkup != READ_OK) {
         return header_checkup;
     }
+    *img = generate_image(header.biWidth, header.biHeight);
 
-    img->width = header->biWidth;
-    img->height = header->biHeight;
-    img->data = malloc(sizeof(struct pixel) * img->height * img->width);
-
-    const uint32_t padding = padding_calculator(img->width);
+    const uint32_t padding = padding_calculator(header.biWidth);
 
     struct pixel *pixels = img->data;
     const size_t width = img->width;
     const size_t height = img->height;
+
     for (size_t i = 0; i < height; i++) {
         if (fread(pixels + width * i, sizeof(struct pixel),width,in) != width) {
-            free(pixels);
-
+            image_deinitialize(img);
             return READ_INVALID_BITS;
         }
         if (fseek(in, padding, SEEK_CUR) != 0) {
-            free(pixels);
-            return READ_INVALID_SIGNATURE;
+            image_deinitialize(img);
+            return READ_INVALID_BITS;
         }
     }
-    free(header);
     return READ_OK;
 }
 
-enum write_status to_bmp( FILE* out, struct image const* img ){
+
+enum write_status to_bmp( FILE* out, struct image const* img ) {
     struct bmp_header header = bmp_header_generator(img);
     if (fwrite(&header, sizeof(struct bmp_header), 1, out) != 1)
         return WRITE_ERROR;
@@ -104,5 +111,3 @@ enum write_status to_bmp( FILE* out, struct image const* img ){
     }
     return WRITE_OK;
 }
-
-

@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
     struct image original_image;
 
-    fprintf(stdout, "PROCESS OF FILE READING HAS BEGUN\n");
+    fprintf(stdout, "PROCESS OF FILE READING HAS BEGUN");
 
     enum read_status new_read_status = from_bmp (in, &original_image);
     if (new_read_status != READ_OK) {
@@ -36,15 +36,15 @@ int main(int argc, char** argv) {
         printf("%d\n", new_read_status);
     }
 
-    fprintf(stdout, "THE IMAGE WAS SUCCESSFULLY READ\n");
+    fprintf(stdout, "THE IMAGE WAS SUCCESSFULLY READ");
 
-    fprintf(stdout, "THE PROCESS OF ROTATING HAS BEGUN...\n");
+    fprintf(stdout, "THE PROCESS OF ROTATING HAS BEGUN...");
 
     struct image rotated_image = rotate(&original_image);
 
-    free(original_image.data);
+    delete_image(original_image);
 
-    fprintf(stdout, "THE IMAGE WAS SUCCESSFULLY ROTATED\n");
+    fprintf(stdout, "THE IMAGE WAS SUCCESSFULLY ROTATED");
 
     FILE * out = fopen(output_file, "wb");
 
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
         return THERE_IS_NO_FILE;
     }
 
-    fprintf(stdout, "THE PROCESS OF WRITING HAS BEGUN...\n");
+    fprintf(stdout, "THE PROCESS OF WRITING HAS BEGUN...");
 
     enum write_status new_write_status = to_bmp(out, &rotated_image);
     if(new_write_status != WRITE_OK) {
@@ -61,10 +61,11 @@ int main(int argc, char** argv) {
         return new_write_status;
     }
 
-    free(rotated_image.data);
+    delete_image(rotated_image);
 
     fclose(in);
     fclose(out);
+
     return 0;
 }
 

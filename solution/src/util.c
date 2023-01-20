@@ -9,3 +9,9 @@ enum arg_status args_counter( const int args ){
     }
 }
 
+void delete_image(struct image img) {
+    if (img.data != NULL) {
+        free(img.data);
+        img.data = NULL;
+    }
+}

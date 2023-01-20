@@ -11,11 +11,7 @@ void set_pixels(struct image *const img, const size_t row, const size_t c, const
 }
 
 struct image generate_image(size_t width, size_t height) {
-    struct image image = {0};
-    image.width = width;
-    image.height = height;
-    image.data = malloc(width * height * sizeof(struct pixel));
-    return image;
+    return (struct image) {.height = height, .width = width, .data = malloc(height * width * sizeof(struct pixel))};
 }
 
 struct image rotate(struct image* const source) {

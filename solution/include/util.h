@@ -15,4 +15,6 @@ enum  arg_status args_counter( const int args );
 enum problem_with_file_status  {
     THERE_IS_NO_FILE
 };
+
+void delete_image(struct image img);
 #endif //IMAGE_TRANSFORMER_UTIL_H
