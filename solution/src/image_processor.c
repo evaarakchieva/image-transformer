@@ -33,8 +33,8 @@ static enum read_status header_reader (FILE *in, struct bmp_header *header) {
 struct bmp_header bmp_header_generator (const struct image* img) {
     uint32_t padding;
     padding = padding_calculator(img->width);
-    uint64_t height = img -> height;
-    uint64_t width = img -> width;
+    const uint64_t height = img -> height;
+    const uint64_t width = img -> width;
     struct bmp_header header = {
             .bfType = 0x4D42,
             .bfReserved = 0,
@@ -70,11 +70,12 @@ enum read_status from_bmp( FILE* in, struct image* img ) {
     const uint32_t padding = padding_calculator(img->width);
 
     struct pixel *pixels = img->data;
-    size_t width = img->width;
-    size_t height = img->height;
+    const size_t width = img->width;
+    const size_t height = img->height;
     for (size_t i = 0; i < height; i++) {
         if (fread(pixels + width * i, sizeof(struct pixel),width,in) != width) {
             free(pixels);
+
             return READ_INVALID_BITS;
         }
         if (fseek(in, padding, SEEK_CUR) != 0) {
