@@ -67,8 +67,7 @@ enum read_status from_bmp( FILE* in, struct image* img ) {
     img->height = header->biHeight;
     img->data = malloc(sizeof(struct pixel) * img->height * img->width);
 
-    uint32_t padding;
-    padding = padding_calculator(img->width);
+    const uint32_t padding = padding_calculator(img->width);
 
     struct pixel *pixels = img->data;
     size_t width = img->width;
